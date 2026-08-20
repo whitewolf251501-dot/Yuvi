@@ -1,0 +1,336 @@
+# YUVI — EXISTING REPOSITORY INTEGRATION AUDIT
+
+You are working on an existing YUVI codebase.
+
+I have provided the existing repository/codebase and a new frontend reference/design.
+
+IMPORTANT:
+
+**DO NOT rebuild YUVI's logic from scratch.**
+
+The existing repository is the source of truth for YUVI's:
+
+* business logic
+* engines
+* skills
+* tools
+* automation
+* memory
+* knowledge
+* integrations
+* data structures
+* execution logic
+* permissions
+* workflows
+* existing functionality
+
+Your job is to understand the existing system first, then connect the new frontend to it.
+
+---
+
+## PHASE 1 — UNDERSTAND THE EXISTING SYSTEM
+
+Before changing code, inspect the entire repository.
+
+Map:
+
+### Core architecture
+
+Identify:
+
+* application entry points
+* routing
+* state management
+* API/service layers
+* data models
+* storage
+* configuration
+* environment variables
+
+### Engines
+
+Identify and document:
+
+* Skill Engine
+* Knowledge Engine
+* Memory Engine
+* Automation Engine
+* Integration Engine
+* Tool Registry
+* any other existing engines
+
+For each engine determine:
+
+1. What it does
+2. Where its code lives
+3. What inputs it expects
+4. What outputs it produces
+5. What other modules depend on it
+6. How the frontend currently communicates with it
+
+---
+
+## PHASE 2 — UNDERSTAND THE SKILL SYSTEM
+
+Inspect every existing skill.
+
+Determine:
+
+* skill registry
+* skill manifests
+* triggers
+* required inputs
+* permissions
+* execution method
+* tools used
+* output format
+* memory behavior
+* automation behavior
+
+Pay special attention to existing `execute()` implementations.
+
+**Do not rewrite working execute() logic just to fit the new UI.**
+
+The new frontend must call the existing skill execution system.
+
+---
+
+## PHASE 3 — UNDERSTAND THE TOOLS
+
+Find the existing tool registry.
+
+Map every tool:
+
+```text
+Tool
+↓
+Purpose
+↓
+Input
+↓
+Execution
+↓
+Output
+↓
+Used by which skills
+```
+
+Do not create duplicate tools if an equivalent tool already exists.
+
+Reuse the existing implementation.
+
+---
+
+## PHASE 4 — UNDERSTAND MEMORY
+
+Determine:
+
+* where memory is stored
+* how memory is written
+* how memory is retrieved
+* how skills interact with memory
+* how user actions are recorded
+* how previous outputs are persisted
+
+The new frontend must use this existing memory architecture.
+
+Do not create a second unrelated frontend-only memory system.
+
+---
+
+## PHASE 5 — UNDERSTAND AUTOMATION
+
+Inspect the existing automation architecture.
+
+Determine:
+
+* automation definitions
+* triggers
+* schedules
+* execution
+* status
+* logs
+* approvals
+* permissions
+* integrations
+
+The new UI should expose the existing automation engine rather than creating fake frontend automations.
+
+---
+
+# PHASE 6 — UNDERSTAND DATA FLOW
+
+Trace real flows through the application.
+
+For example:
+
+USER
+↓
+FRONTEND
+↓
+COMMAND / ACTION
+↓
+SKILL ENGINE
+↓
+SKILL
+↓
+TOOLS
+↓
+EXTERNAL SERVICE / DATA
+↓
+RESULT
+↓
+MEMORY / OUTPUT STORAGE
+↓
+FRONTEND
+
+Document the actual flow found in the repository.
+
+Do not assume architecture that isn't present.
+
+---
+
+# PHASE 7 — CREATE AN INTEGRATION MAP
+
+After auditing the repository, create a concise map like:
+
+| New UI            | Existing YUVI System               |
+| ----------------- | ---------------------------------- |
+| Command interface | Command / Skill Engine             |
+| Lead generation   | Lead Generation Skill              |
+| Lead research     | Lead Research Skill                |
+| Lead scoring      | Lead Scoring Skill                 |
+| Outreach          | Outreach Skill                     |
+| Memory panel      | Memory Engine                      |
+| Knowledge panel   | Knowledge Engine                   |
+| Automation panel  | Automation Engine                  |
+| Tools             | Tool Registry                      |
+| Integrations      | Integration Engine                 |
+| Activity/history  | Existing persistence/output system |
+
+Only use mappings that actually exist in the repository.
+
+If something does not exist, explicitly mark it as:
+
+`NOT CURRENTLY IMPLEMENTED`
+
+Do not invent functionality.
+
+---
+
+# PHASE 8 — NEW FRONTEND
+
+Now inspect the provided reference design.
+
+The new frontend is ONLY a presentation/interface upgrade.
+
+Preserve the visual design, including:
+
+* layout
+* typography
+* colors
+* 3D elements
+* animation
+* navigation
+* cards
+* spacing
+* visual hierarchy
+* interactions
+
+But connect the UI to the REAL YUVI engines discovered during the audit.
+
+---
+
+# CRITICAL RULE
+
+**SEPARATE PRESENTATION FROM BUSINESS LOGIC.**
+
+The new React frontend should not duplicate YUVI's business logic.
+
+Prefer:
+
+```text
+UI Component
+      ↓
+YUVI service/API adapter
+      ↓
+Existing engine
+      ↓
+Existing skill/tool
+      ↓
+Existing result
+```
+
+NOT:
+
+```text
+UI Component
+      ↓
+New fake logic
+```
+
+---
+
+# PHASE 9 — DO NOT BREAK EXISTING FUNCTIONALITY
+
+Before modifying anything:
+
+Identify existing working functionality.
+
+Do not unnecessarily rewrite it.
+
+Do not rename important APIs without a reason.
+
+Do not remove existing modules.
+
+Do not replace working engines with simplified versions.
+
+Do not create duplicate versions of existing systems.
+
+If an adapter is required, create a thin adapter.
+
+---
+
+# PHASE 10 — IMPLEMENTATION
+
+Only after understanding the repository:
+
+1. Build the new frontend architecture.
+2. Connect navigation.
+3. Connect existing engines.
+4. Connect existing skills.
+5. Connect existing tools.
+6. Connect existing memory.
+7. Connect existing automation.
+8. Connect existing integrations.
+9. Connect existing persistence.
+10. Preserve existing functionality.
+
+Use mock data ONLY where the existing system genuinely has no implementation.
+
+Clearly mark mocked functionality.
+
+---
+
+# FINAL PRINCIPLE
+
+The new UI should be:
+
+**NEW BODY + EXISTING BRAIN**
+
+Do not build a beautiful fake YUVI.
+
+Build a beautiful interface that actually controls the YUVI system that already exists.
+
+Before making major changes, show me:
+
+1. Repository architecture
+2. Engine map
+3. Skill map
+4. Tool map
+5. Memory flow
+6. Automation flow
+7. Frontend → engine integration plan
+8. Anything missing or broken
+
+Then proceed with implementation.

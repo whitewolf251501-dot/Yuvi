@@ -1,0 +1,461 @@
+# MASTER PROMPT — IMAGE → COMPLETE REACT + 3D FRONTEND
+
+You are a senior UI/UX designer, frontend engineer, and 3D web developer.
+
+I will provide you with **one or more reference images** of a website/application.
+
+Your job is to **reverse-engineer the visual language of the reference and build the COMPLETE frontend**, not merely reproduce the screenshot.
+
+## 1. PRIMARY RULE
+
+The reference image is the **SOURCE OF TRUTH for the design system**.
+
+Do NOT invent a completely different design.
+
+Everything you create must feel like it belongs to the exact same product shown in the reference.
+
+Preserve and infer:
+
+* Overall visual identity
+* Layout structure
+* Navigation style
+* Sidebar/header positioning
+* Typography
+* Font hierarchy
+* Font sizes
+* Spacing
+* Border radius
+* Card shapes
+* Shadows
+* Glassmorphism
+* Borders
+* Background treatment
+* Colors
+* Gradients
+* Glow effects
+* Lighting
+* 3D depth
+* Icons
+* Button styles
+* Inputs
+* Tables
+* Charts
+* Animations
+* Hover states
+* Transitions
+* Image treatment
+* Decorative elements
+* Empty states
+* Micro-interactions
+
+Do not simplify the design just because some elements are difficult to implement.
+
+---
+
+# 2. TECHNOLOGY
+
+Build the frontend using:
+
+* React
+* Vite
+* JavaScript or TypeScript
+* Tailwind CSS where useful
+* Three.js
+* React Three Fiber
+* Drei
+* Framer Motion
+
+Use real HTML/CSS/React components.
+
+Do NOT make the interface as one giant component.
+
+Create a clean reusable component architecture.
+
+---
+
+# 3. 3D REQUIREMENT
+
+If the reference contains 3D objects, depth, floating elements, spatial UI, particles, holographic elements, glass objects, lighting, or other dimensional effects:
+
+IMPLEMENT THEM AS REAL INTERACTIVE 3D ELEMENTS.
+
+Use:
+
+* React Three Fiber
+* Three.js
+* Drei
+* shaders when necessary
+* lighting
+* materials
+* particles
+* camera movement
+* depth
+* animation
+
+Do NOT simply place a screenshot of the 3D element as a background.
+
+The result should feel like a real interactive 3D application.
+
+If the reference is primarily 2D, keep the 3D subtle rather than forcing unnecessary 3D everywhere.
+
+---
+
+# 4. REFERENCE IMAGES
+
+When an image/photo/product/person/object appears in the reference:
+
+* Reproduce the visual treatment as accurately as possible.
+* Preserve the composition.
+* Preserve the aspect ratio.
+* Preserve cropping.
+* Preserve placement.
+* Preserve lighting/style where possible.
+
+If the exact image asset is available, use it.
+
+If the exact asset is NOT available:
+
+1. Search available project assets first.
+2. If appropriate, use a visually equivalent asset.
+3. If image generation is available, generate a visually matching asset.
+4. Never replace an important visual element with an unrelated generic image.
+
+Do not randomly substitute images just to fill space.
+
+---
+
+# 5. COMPLETE APPLICATION
+
+Do NOT build only the page visible in the reference.
+
+First identify the product/application implied by the reference.
+
+Then create ALL necessary pages.
+
+For example, if the reference shows a sidebar containing:
+
+Dashboard
+Projects
+Analytics
+Clients
+Settings
+
+then create all of those pages even if only Dashboard is shown.
+
+Every page must feel like it belongs to the same application.
+
+---
+
+# 6. UNSEEN PAGES
+
+For pages that are NOT present in the reference:
+
+Infer their design from the existing reference.
+
+Do NOT create a new visual language.
+
+For example:
+
+If the Dashboard uses:
+
+* dark glass panels
+* rounded cards
+* cyan glow
+* thin borders
+* floating 3D objects
+
+then Analytics, Projects, Clients and Settings must use the SAME:
+
+* background
+* cards
+* borders
+* typography
+* spacing
+* accent treatment
+* interaction language
+* 3D language
+
+Only the CONTENT and INFORMATION ARCHITECTURE should change.
+
+The application should feel designed by one designer, not generated page-by-page by different AIs.
+
+---
+
+# 7. NAVIGATION
+
+Determine the most logical navigation structure from the reference.
+
+The navigation may be:
+
+* left sidebar
+* right sidebar
+* top navigation
+* bottom navigation
+* floating navigation
+* hybrid navigation
+
+Keep the same placement and visual treatment as the reference.
+
+If the reference does not clearly show navigation, infer the most appropriate navigation while maintaining the reference's design language.
+
+Every navigation item must actually work.
+
+Clicking a page should route to the corresponding page.
+
+Do not create dead buttons.
+
+---
+
+# 8. RESPONSIVENESS
+
+The application must work on:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile
+
+Do not simply shrink the desktop layout.
+
+Reorganize components intelligently for smaller screens.
+
+The visual identity must remain consistent.
+
+---
+
+# 9. INTERACTIONS
+
+The frontend must feel alive.
+
+Implement appropriate:
+
+* Hover states
+* Click states
+* Focus states
+* Page transitions
+* Card animations
+* Modal animations
+* Sidebar transitions
+* Button feedback
+* Loading states
+* Scroll animations
+* 3D parallax
+* Mouse movement
+* Smooth transitions
+
+Animations should be smooth and intentional.
+
+Do not add random animations everywhere.
+
+---
+
+# 10. FUNCTIONALITY
+
+Build a functional frontend prototype.
+
+Buttons should work.
+
+Navigation should work.
+
+Forms should work.
+
+Tabs should work.
+
+Dropdowns should work.
+
+Modals should work.
+
+Search should work where relevant.
+
+Filters should work where relevant.
+
+Tables should have realistic data.
+
+Charts should render realistic sample data.
+
+If a backend is not provided, use local mock data/state.
+
+Do NOT spend time building a backend unless explicitly requested.
+
+---
+
+# 11. DESIGN CONSISTENCY SYSTEM
+
+Before creating pages, extract a reusable internal design system from the reference.
+
+Define:
+
+* Primary background
+* Secondary background
+* Surface colors
+* Accent colors
+* Text colors
+* Muted text
+* Border colors
+* Shadows
+* Glow
+* Radius scale
+* Spacing scale
+* Typography scale
+* Button variants
+* Card variants
+* Input variants
+* Navigation states
+* Animation style
+
+Then reuse these throughout the application.
+
+DO NOT independently style every page.
+
+---
+
+# 12. VISUAL ACCURACY
+
+After implementation, compare the generated application against the reference image.
+
+Correct:
+
+* spacing
+* alignment
+* proportions
+* scale
+* typography
+* colors
+* contrast
+* positioning
+* visual density
+* hierarchy
+* 3D depth
+* lighting
+* image placement
+
+Prioritize **visual similarity over adding unnecessary features**.
+
+The final result should look like the same product represented in the reference image.
+
+---
+
+# 13. DO NOT DO THESE THINGS
+
+Do NOT:
+
+* create a generic SaaS dashboard
+* replace the design with standard Bootstrap-like components
+* use random gradients
+* use random colors
+* change the navigation style unnecessarily
+* make every page look identical
+* make unseen pages visually unrelated
+* use placeholder boxes when a real visual can be created
+* remove complex visual elements because they are difficult
+* flatten 3D elements into 2D images
+* create unnecessary UI
+* overcrowd the interface
+* add features that contradict the reference
+* use a completely different design for missing pages
+
+---
+
+# 14. INFORMATION ARCHITECTURE
+
+Each page should have ONE clear purpose.
+
+Do not copy the exact same dashboard structure onto every page.
+
+Instead:
+
+Dashboard → overview and important information
+
+Projects → project management
+
+Analytics → metrics and analysis
+
+Clients → client management
+
+Settings → configuration
+
+etc.
+
+The UI structure should change according to the page's purpose while maintaining the SAME visual design system.
+
+---
+
+# 15. CODE QUALITY
+
+Use:
+
+* reusable components
+* reusable layout components
+* reusable cards
+* reusable buttons
+* reusable navigation
+* reusable typography
+* reusable 3D components
+* clean routing
+* clean state management
+* organized files
+
+Avoid:
+
+* duplicated code
+* giant components
+* hardcoded repeated styles
+* unnecessary dependencies
+* broken imports
+* unused components
+
+---
+
+# 16. FINAL QUALITY CHECK
+
+Before considering the implementation complete, verify:
+
+[ ] All pages exist
+
+[ ] Sidebar/navigation works
+
+[ ] All navigation links work
+
+[ ] Reference visual language is preserved
+
+[ ] Unseen pages match the same design system
+
+[ ] Images are visually appropriate
+
+[ ] 3D elements are genuinely interactive where appropriate
+
+[ ] Animations are smooth
+
+[ ] Responsive layouts work
+
+[ ] Buttons and interactions work
+
+[ ] No obvious placeholder UI remains
+
+[ ] No broken routes
+
+[ ] No console errors
+
+[ ] Components are reusable
+
+[ ] The application feels like ONE coherent product
+
+---
+
+# MOST IMPORTANT INSTRUCTION
+
+Do not think:
+
+"How do I make a website that looks similar to this screenshot?"
+
+Think:
+
+"How do I discover the design system behind this screenshot and use that system to build the entire product?"
+
+The reference image defines the **visual DNA**.
+
+Build the rest of the application from that DNA.
+
+Do not create a different design for pages that were not shown.
+
+The final frontend should look like the reference image evolved into a complete, production-quality application.

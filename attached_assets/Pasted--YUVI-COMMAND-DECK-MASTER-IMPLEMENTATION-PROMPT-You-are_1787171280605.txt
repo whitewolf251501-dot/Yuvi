@@ -1,0 +1,676 @@
+# YUVI COMMAND DECK — MASTER IMPLEMENTATION PROMPT
+
+You are working on the current YUVI / AI Nexus dashboard project.
+
+This is **Mission 01: THE COMMAND DECK**.
+
+Your job is to make one focused, production-quality frontend upgrade to the existing dashboard.
+
+## IMPORTANT
+
+Do NOT rebuild the application from scratch.
+
+Do NOT replace the current Replit visual design.
+
+Do NOT redesign the entire product.
+
+The current dashboard visual direction is already approved. I like it.
+
+Your job is to **polish, extend and organize the existing dashboard** while preserving its current visual language, spacing, typography, colors, glass effects, animations and overall feel.
+
+Use the attached YUVI logo wherever appropriate.
+
+For reference, the existing live YUVI v6.1 application contains the older implementations of:
+
+* Settings
+* Leads
+* Bulk Outreach
+* Command Center
+* Chat
+* Library
+* Pipeline
+
+Use the live v6.1 application as a **functional and structural reference**, especially for Settings, Leads and Outreach.
+
+Do not copy its old visual style blindly. The CURRENT Replit dashboard remains the visual source of truth.
+
+---
+
+# 1. APPROVALS — REPLACE AUTOMATIONS PAGE
+
+Remove/replace the current Automations destination with:
+
+## APPROVALS
+
+This becomes the place where YUVI sends anything that requires human review before final use.
+
+It must support:
+
+* Social media posts
+* Captions
+* Carousels
+* Reels
+* Stories
+* Presentations
+* PDFs
+* Documents
+* Proposals
+* Reports
+* Client deliverables
+* Other generated assets
+
+Each approval item should clearly show:
+
+* Asset type
+* Title
+* Client / workspace
+* Created by agent
+* Date/time
+* Status
+* Short description
+* Preview
+* Approve
+* Reject
+* Edit
+* Save
+* Open externally
+
+For content, make the approval experience visually clean and easy to use from a phone.
+
+Statuses:
+
+* PENDING
+* APPROVED
+* REJECTED
+* EDITING
+* PUBLISHED / COMPLETED
+
+Do not create fake backend functionality.
+
+If the backend is not currently connected, use a clean frontend state/model abstraction that can later be connected to Supabase.
+
+---
+
+# 2. CANVA EDITING
+
+For assets that can be edited in Canva, provide:
+
+## EDIT IN CANVA
+
+The button should open the appropriate Canva project/editor using the existing project structure or configurable Canva URL/project ID.
+
+Do not hardcode fake project URLs.
+
+Create a clean integration abstraction so the real Canva project URL can later come from backend/database data.
+
+The experience should be:
+
+YUVI generates asset
+→ Approval
+→ Preview
+→ Edit in Canva
+→ Return / approve
+
+This capability must work for:
+
+* Presentations
+* Carousels
+* Social creatives
+* Documents where applicable
+
+---
+
+# 3. EXTERNAL PREVIEW / PHONE ACCESS
+
+Every generated asset should have an:
+
+## OPEN / PREVIEW
+
+action.
+
+The architecture should support opening the asset through external services such as:
+
+* Google Drive
+* Browser
+* Canva
+* PDF viewer
+* Image viewer
+* Video viewer
+
+The goal is that I can generate something on desktop and quickly open/preview it from my phone.
+
+Do NOT fake external integrations.
+
+Create the UI and integration points cleanly so real URLs/storage providers can be connected later.
+
+---
+
+# 4. COMMAND PAGE → REAL CHAT EXPERIENCE
+
+The current Command page should become a proper:
+
+# CHAT
+
+experience.
+
+Think **ChatGPT-style conversation organization**, but visually consistent with YUVI.
+
+Requirements:
+
+### Conversation sidebar/list
+
+Show:
+
+* New Chat
+* Previous conversations
+* Conversation title
+* Last message preview
+* Date/time
+* Search
+* Delete/archive
+* Selected conversation state
+
+Group conversations intelligently when possible:
+
+* Today
+* Yesterday
+* Previous 7 Days
+* Older
+
+### Main conversation area
+
+Show:
+
+* YUVI messages
+* User messages
+* timestamps
+* clean message hierarchy
+* scrolling conversation
+* typing/thinking state
+* attachments
+* input area
+* send button
+* microphone button if already supported
+* new conversation action
+
+The important thing:
+
+**Every conversation should be treated as persistent conversation history.**
+
+Do not build a fake static ChatGPT clone.
+
+Create a clean conversation data model that can later connect directly to Supabase.
+
+Suggested conceptual structure:
+
+Conversation
+→ messages
+→ metadata
+→ timestamps
+→ related tasks
+→ related agent activity
+→ related pages/assets
+
+---
+
+# 5. YUVI SHOULD BE ABLE TO CONTROL THE UI
+
+The architecture should prepare for YUVI to eventually do things such as:
+
+User:
+"Show me my leads."
+
+YUVI:
+→ responds
+→ navigates to Leads
+
+User:
+"Open the approval for this carousel."
+
+YUVI:
+→ responds
+→ opens Approvals
+→ opens the relevant asset
+
+User:
+"Show me what Scout found today."
+
+YUVI:
+→ opens Leads / agent activity
+
+User:
+"Take me to settings."
+
+YUVI:
+→ opens Settings
+
+Do not implement a fake AI navigation engine.
+
+Instead, create clean frontend navigation/action functions that a future Groq-powered YUVI layer can call.
+
+Example conceptual actions:
+
+navigateTo(page)
+openApproval(id)
+openConversation(id)
+openAsset(id)
+openLead(id)
+openAgent(id)
+openSettings(tab)
+
+---
+
+# 6. SETTINGS — RESTORE THE FULL SETTINGS SYSTEM
+
+The Settings experience should contain the full structure from the current/live YUVI v6.1 reference.
+
+Use these sections/tabs:
+
+1. API & AI
+2. Memory & Sync
+3. Skills
+4. Knowledge
+5. Security
+6. YUVI Identity
+7. Workspace (n8n)
+
+Preserve the CURRENT Replit visual design while recreating the functionality/organization.
+
+## API & AI
+
+Include:
+
+* Groq API configuration
+* API status/test
+* Default AI mode/model configuration
+* AI-related preferences
+
+Do not expose secrets unnecessarily.
+
+## MEMORY & SYNC
+
+Prepare UI for:
+
+* Supabase memory
+* conversation memory
+* sync status
+* database connection status
+* memory controls
+* refresh/sync
+
+Do not actually implement Supabase yet.
+
+Create the frontend contract only.
+
+## SKILLS
+
+Include:
+
+* installed skills
+* enabled/disabled state
+* skill status
+* scheduling/configuration entry point
+* skill details
+
+## KNOWLEDGE
+
+Include:
+
+* knowledge files
+* upload
+* supported file types
+* file status
+* remove/manage
+* knowledge sync state
+
+## SECURITY
+
+Include:
+
+* lock/passcode settings
+* session/security controls
+* biometric/device unlock where supported
+* security status
+
+## YUVI IDENTITY
+
+Include:
+
+* YUVI name
+* personality
+* behavior instructions
+* business context
+* briefing preferences
+* proactive behavior preferences
+
+## WORKSPACE (N8N)
+
+Include:
+
+* n8n connection status
+* workspace URL
+* connection test
+* sync state
+* task queue status
+
+Do not implement actual n8n integration yet.
+
+---
+
+# 7. LEADS PAGE
+
+The Leads page already has a structured visual system in the live v6.1 application.
+
+Preserve that structure.
+
+Use the live application as reference for:
+
+* lead table
+* search
+* filters
+* category filtering
+* score
+* status
+* WhatsApp/action controls
+* CSV import
+* deduplication
+* add lead
+* outreach entry point
+
+But visually adapt it to the CURRENT Replit dashboard.
+
+Do not redesign the lead experience into cards if the existing structured table is better.
+
+The Leads page should remain information-dense and practical.
+
+---
+
+# 8. OUTREACH
+
+Preserve the structured Bulk Outreach experience from the current/live YUVI reference.
+
+It should support the UI for:
+
+### Step 1
+
+Upload flyer/creative
+
+### Step 2
+
+Choose message mode:
+
+* Message only
+* Image only
+* Image + message
+
+Include:
+
+* YUVI Suggest
+* message editor
+* preview
+
+### Step 3
+
+Select recipients:
+
+* All
+* None
+* Hot only
+* selected leads
+
+Then:
+
+## START OUTREACH
+
+Also show:
+
+## OUTREACH QUEUE
+
+with each queued lead and its current state.
+
+Do not claim that WhatsApp messages are actually sent.
+
+This frontend must be ready for the future Hunter n8n agent.
+
+---
+
+# 9. LOCK SCREEN
+
+Add a proper YUVI lock screen.
+
+On locked state:
+
+* YUVI logo
+* YUVI name
+* subtle system animation
+* passcode entry
+* unlock button
+* biometric/device unlock when available
+* clean security status
+
+It should feel like an **AI operating system**, not a generic login page.
+
+The lock screen should preserve the current visual identity.
+
+Support:
+
+* lock
+* unlock
+* session state
+* configurable passcode
+
+Do not create insecure plaintext secret storage.
+
+---
+
+# 10. YUVI LOGO
+
+Use the attached logo asset.
+
+Do not distort it.
+
+Use it intelligently in:
+
+* lock screen
+* application identity
+* sidebar/header where appropriate
+* chat/YUVI identity
+* loading state if visually appropriate
+
+Do not overuse it.
+
+---
+
+# 11. MOBILE-FIRST CONSIDERATION
+
+This dashboard will be used heavily from a phone.
+
+Do NOT simply make the desktop UI smaller.
+
+Make the important experiences genuinely usable on mobile:
+
+* Chat
+* Approvals
+* Asset preview
+* Leads
+* Outreach
+* Settings
+* Lock screen
+
+Preserve the premium desktop experience too.
+
+Pay particular attention to:
+
+* touch targets
+* horizontal overflow
+* modal sizing
+* bottom actions
+* scrolling
+* tables
+* asset previews
+* chat input
+* approval buttons
+
+---
+
+# 12. DO NOT OVERBUILD
+
+This is extremely important.
+
+We are doing the dashboard first.
+
+Do NOT implement:
+
+* Supabase backend
+* n8n workflows
+* Groq agent architecture
+* seven AI agents
+* real publishing
+* real WhatsApp automation
+* real lead scraping
+* real memory engine
+
+Those are separate missions.
+
+Only create clean frontend contracts/interfaces/placeholders where necessary.
+
+---
+
+# 13. PRESERVE THE CURRENT DESIGN
+
+The current Replit design is approved.
+
+Do NOT change:
+
+* overall theme
+* primary visual language
+* typography unless required
+* major navigation philosophy
+* glass effects
+* dashboard personality
+* spacing system without reason
+* animation language
+
+Polish it rather than redesign it.
+
+Avoid excessive neon, excessive gradients or excessive sci-fi decoration.
+
+YUVI should feel:
+
+**Smart. Premium. Calm. Futuristic. Professional.**
+
+Not like a spaceship UI.
+
+---
+
+# 14. CODE QUALITY
+
+Before modifying anything:
+
+1. Inspect the existing project.
+2. Understand its routing/navigation.
+3. Identify reusable components.
+4. Identify the current data/state architecture.
+5. Identify how pages are currently rendered.
+6. Reuse existing components wherever possible.
+
+Do NOT duplicate components unnecessarily.
+
+Do NOT create multiple competing navigation systems.
+
+Do NOT introduce a new framework.
+
+Do NOT rewrite working components just for stylistic reasons.
+
+Do NOT install unnecessary dependencies.
+
+Keep the implementation lightweight.
+
+---
+
+# 15. IMPORTANT FOR CREDIT / TOKEN LIMITS
+
+This is a free-tier constrained implementation.
+
+Therefore:
+
+* Do not waste output explaining what you are doing.
+* Do not generate a long report.
+* Do not repeatedly rewrite files.
+* Do not create unnecessary abstractions.
+* Do not rebuild working components.
+* Do not generate fake backend systems.
+* Do not create large mock datasets.
+* Do not add unnecessary dependencies.
+
+Work directly on the existing codebase.
+
+Make the smallest number of high-quality changes required to complete this mission.
+
+If an existing component can be extended, EXTEND IT.
+
+If an existing page can be upgraded, UPGRADE IT.
+
+Do not replace it unnecessarily.
+
+---
+
+# 16. ACCEPTANCE TEST
+
+Do not consider this complete until all of these exist and are navigable:
+
+* [ ] Dashboard remains visually intact/polished
+* [ ] Approvals page exists
+* [ ] Approval items support preview
+* [ ] Approval items support approve/reject
+* [ ] Save action exists
+* [ ] Edit in Canva integration point exists
+* [ ] External preview/open integration exists
+* [ ] Chat page exists
+* [ ] Chat conversation list exists
+* [ ] New chat works
+* [ ] Conversation selection works
+* [ ] Conversation data model exists
+* [ ] Settings exists with all 7 sections
+* [ ] API & AI
+* [ ] Memory & Sync
+* [ ] Skills
+* [ ] Knowledge
+* [ ] Security
+* [ ] YUVI Identity
+* [ ] Workspace / n8n
+* [ ] Leads page preserves structured table experience
+* [ ] Outreach page preserves structured bulk outreach experience
+* [ ] Lock screen exists
+* [ ] Attached YUVI logo is integrated
+* [ ] Mobile experience is usable
+* [ ] Existing dashboard functionality is not broken
+* [ ] No fake claims of real backend execution
+* [ ] No unnecessary dependencies added
+* [ ] Application builds successfully
+* [ ] No console-breaking errors
+
+---
+
+# FINAL INSTRUCTION
+
+Start by inspecting the current codebase and existing architecture.
+
+Then implement **Mission 01 — THE COMMAND DECK** completely.
+
+Do not ask me to manually implement pieces.
+
+Do not stop after analysis.
+
+Do not provide a tutorial.
+
+Actually modify the project.
+
+At the end, give me ONLY a very short summary:
+
+1. What you changed
+2. What files/components changed
+3. Whether the build passes
+4. Any genuinely blocking issue
+
+Everything else should be implemented, not explained.
