@@ -36,6 +36,31 @@ function remove(key: string): void {
 
 export const store = { read, write, remove };
 
+// Central Groq model registry — the Settings dropdown, the default settings value,
+// and the localStorage migration below all read from this single list/constant
+// so there is exactly one place that defines which models exist and which is default.
+export const GROQ_MODELS: { id: string; label: string }[] = [
+  { id: "openai/gpt-oss-120b", label: "GPT-OSS 120B" },
+  { id: "llama-3.3-70b-versatile", label: "Llama 3.3 70B Versatile" },
+  { id: "llama-3.1-8b-instant", label: "Llama 3.1 8B Instant" },
+  { id: "mixtral-8x7b-32768", label: "Mixtral 8x7B" },
+];
+
+export const DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b";
+
+// Model ids that used to be the default and are no longer reliably available on Groq.
+// Anyone with one of these saved locally gets migrated to DEFAULT_GROQ_MODEL once.
+const RETIRED_DEFAULT_MODELS = new Set(["llama-3.3-70b-versatile"]);
+
+// Resolves a saved (possibly stale/unknown) modelId to the value that should actually
+// be used and persisted: unknown/retired defaults migrate forward, anything else the
+// user deliberately picked (including other still-supported models) is preserved.
+function resolveGroqModel(savedModelId: string | undefined): string {
+  if (!savedModelId) return DEFAULT_GROQ_MODEL;
+  if (RETIRED_DEFAULT_MODELS.has(savedModelId)) return DEFAULT_GROQ_MODEL;
+  return savedModelId;
+}
+
 export type YuviSettings = {
   groq: { modelId: string; keyLastFour: string; hasKey: boolean; connectionStatus: "not_connected" | "connected" | "failed" };
   identity: {
@@ -60,7 +85,7 @@ When an action requires human approval, ask for it.
 Prefer concise, useful communication over unnecessary explanation.`;
 
 export const DEFAULT_SETTINGS: YuviSettings = {
-  groq: { modelId: "llama-3.3-70b-versatile", keyLastFour: "", hasKey: false, connectionStatus: "not_connected" },
+  groq: { modelId: DEFAULT_GROQ_MODEL, keyLastFour: "", hasKey: false, connectionStatus: "not_connected" },
   identity: {
     name: "YUVI",
     personalityPrompt: DEFAULT_PERSONALITY,
@@ -76,8 +101,10 @@ const GROQ_KEY_KEY = "groq_key"; // stored separately from settings metadata so 
 
 export function loadSettings(): YuviSettings {
   const stored = read<Partial<YuviSettings>>(SETTINGS_KEY, {});
-  return {
-    groq: { ...DEFAULT_SETTINGS.groq, ...(stored.groq || {}) },
+  const mergedGroq = { ...DEFAULT_SETTINGS.groq, ...(stored.groq || {}) };
+  const resolvedModelId = resolveGroqModel(mergedGroq.modelId);
+  const settings: YuviSettings = {
+    groq: { ...mergedGroq, modelId: resolvedModelId },
     identity: {
       ...DEFAULT_SETTINGS.identity,
       ...(stored.identity || {}),
@@ -86,6 +113,12 @@ export function loadSettings(): YuviSettings {
     },
     lock: { ...DEFAULT_SETTINGS.lock, ...(stored.lock || {}) }
   };
+  // One-time migration: if the saved model id was a retired default, persist the
+  // corrected value now so this doesn't need to re-migrate on every load.
+  if (stored.groq?.modelId !== resolvedModelId) {
+    saveSettings(settings);
+  }
+  return settings;
 }
 
 export function saveSettings(settings: YuviSettings): void {

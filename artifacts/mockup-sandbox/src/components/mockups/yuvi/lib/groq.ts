@@ -21,10 +21,12 @@ export type GroqChatResult =
 // Real chat completion call. Runs directly from the browser using the key the user saved
 // in Settings → API & AI. Same caveat as testGroqConnection: the key stays in this tab's
 // storage and is only ever sent to Groq directly — never to any server we control.
+import { DEFAULT_GROQ_MODEL } from "./store";
+
 export async function askGroq(
   messages: ChatMessage[],
   apiKey: string,
-  model: string = "llama-3.3-70b-versatile",
+  model: string = DEFAULT_GROQ_MODEL,
 ): Promise<GroqChatResult> {
   const key = apiKey.trim();
   if (!key) return { ok: false, reason: "No Groq API key saved yet. Add one in Settings → API & AI." };
@@ -42,6 +44,12 @@ export async function askGroq(
     }
     if (!res.ok) {
       const errBody = await res.text().catch(() => "");
+      if (res.status === 404 && errBody.includes("model_not_found")) {
+        // Safe, human-readable message for the UI; the raw body (no keys/headers) still
+        // goes to the console for developers debugging a bad model id.
+        console.error("Groq model_not_found:", errBody.slice(0, 300));
+        return { ok: false, reason: "YUVI could not access the selected Groq model. Check the selected model or Groq project access." };
+      }
       return { ok: false, reason: `Groq returned an error (HTTP ${res.status}). ${errBody.slice(0, 160)}` };
     }
     const data = await res.json();
