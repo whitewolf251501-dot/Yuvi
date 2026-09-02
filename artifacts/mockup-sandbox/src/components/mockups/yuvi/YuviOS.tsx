@@ -2,6 +2,9 @@ import { useMemo, useRef, useState, useEffect, type Dispatch, type FormEvent, ty
 import yuviLogo from "../../../assets/yuvi-logo.png";
 import { store, loadSettings, saveSettings, loadGroqKey, saveGroqKey, GROQ_MODELS, type YuviSettings } from "./lib/store";
 import { testGroqConnection, askGroq, type ChatMessage } from "./lib/groq";
+import { loadAllSkills } from "./lib/skillLoader";
+import { getApi } from "./lib/skillRegistry";
+import type { GenerateBriefResult } from "./lib/skills/lead-research";
 import {
   Archive, ArrowUpRight, AtSign, BadgeCheck, BarChart3, Bell, Bot, BrainCircuit, BriefcaseBusiness,
   CalendarDays, Check, CheckCircle2, ChevronDown, CircleDollarSign, Command, Database, Edit3,
@@ -248,8 +251,9 @@ function LeadsView({ leads, setLeads, onAdd, setCurrent, notify, settings }: { l
     const key=loadGroqKey();
     if(!key){notify("Add a Groq API key in Settings → API & AI to run real research.");return;}
     setResearching(l.name);
-    const prompt=`Give a short, practical outreach brief for a ${settings.identity.name==="YUVI"?"digital agency (Yugantar Growth)":"business"} approaching this lead:\nName: ${l.name}\nCompany: ${l.company}\nCategory: ${l.category}\nCurrent stage: ${l.stage}\nEstimated value: ${l.value}\n\nGive: 1) a likely pain point for a business like this, 2) one specific opening line to use in outreach, 3) one risk/objection to expect. Keep it under 120 words, no headers, just tight prose.`;
-    const result=await askGroq([{role:"system",content:settings.identity.personalityPrompt},{role:"user",content:prompt}],key,settings.groq.modelId);
+    const api=getApi("lead-research");
+    if(!api){notify("Lead Research skill is not enabled.");setResearching(null);return;}
+    const result=await (api.execute as (capability:string,args?:Record<string,unknown>)=>Promise<GenerateBriefResult>)("lead-research.generate-brief",{lead:{name:l.name,company:l.company,category:l.category,stage:l.stage,value:l.value},personalityPrompt:settings.identity.personalityPrompt,apiKey:key,modelId:settings.groq.modelId});
     setResearching(null);
     if(result.ok){setResearch({name:l.name,text:result.text});}else{notify(`Research failed: ${result.reason}`);}
   };
@@ -380,6 +384,7 @@ function LeadModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: (e: F
 export function YuviOS() {
   const [view,setView]=useState<View>("Dashboard");const [sidebar,setSidebar]=useState(false);const [userMenu,setUserMenu]=useState(false);const [modal,setModal]=useState(false);const [locked,setLocked]=useState(false);
   const [installPrompt,setInstallPrompt]=useState<any>(null);
+  useEffect(()=>{loadAllSkills()},[]);
   useEffect(()=>{const handler=(e:Event)=>{e.preventDefault();setInstallPrompt(e)};window.addEventListener("beforeinstallprompt",handler);return()=>window.removeEventListener("beforeinstallprompt",handler)},[]);
   const installApp=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;setInstallPrompt(null)};
   const [settings,setSettings]=useState<YuviSettings>(()=>loadSettings());
