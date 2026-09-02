@@ -31,13 +31,14 @@ export async function askGroq(
   const key = apiKey.trim();
   if (!key) return { ok: false, reason: "No Groq API key saved yet. Add one in Settings → API & AI." };
   try {
-    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    // Routed through the server-side proxy (routes/groq.ts) so the key never appears
+    // in the browser's Network tab. The saved key is still sent as `testKey` for now —
+    // once GROQ_API_KEY is set as a server env var, this param can be dropped entirely
+    // and the server key will be used for every user automatically.
+    const res = await fetch("/api/groq/chat", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 1024 }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 1024, testKey: key }),
     });
     if (res.status === 401 || res.status === 403) {
       return { ok: false, reason: "Groq rejected this key (unauthorized). Check it in Settings." };
