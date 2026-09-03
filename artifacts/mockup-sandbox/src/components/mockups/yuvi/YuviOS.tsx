@@ -5,6 +5,7 @@ import { testGroqConnection, askGroq, type ChatMessage } from "./lib/groq";
 import { loadAllSkills } from "./lib/skillLoader";
 import { getApi } from "./lib/skillRegistry";
 import type { GenerateBriefResult } from "./lib/skills/lead-research";
+import { handle as brainHandle, chat as brainChat } from "./lib/brain/brain";
 import {
   Archive, ArrowUpRight, AtSign, BadgeCheck, BarChart3, Bell, Bot, BrainCircuit, BriefcaseBusiness,
   CalendarDays, Check, CheckCircle2, ChevronDown, CircleDollarSign, Command, Database, Edit3,
@@ -228,11 +229,26 @@ function ChatView({ conversations, setConversations, selectedId, setSelectedId, 
     const historyForModel = (selected.messages || []).slice(-12).map(m=>({role: m.role==="yuvi"?"assistant":"user", content: m.text} as ChatMessage));
     setConversations(items=>items.map(c=>c.id===selected.id?{...c,title:c.messages.length===0?displayText.slice(0,30):c.title,preview:displayText,updatedAt:"Just now",messages:[...c.messages,userMessage]}:c));
     setText(""); const attachedFile = pendingFile; setPendingFile(null); setThinking(true);
-    const systemPrompt = `${settings.identity.personalityPrompt}\n\n${settings.identity.customInstructions}`.trim();
     const userContent = attachedFile ? `${clean || "Please review this file."}\n\n--- Attached file: ${attachedFile.name} ---\n${attachedFile.content.slice(0, 6000)}` : clean;
     const key = loadGroqKey();
-    const result = await askGroq([{role:"system",content:systemPrompt}, ...historyForModel, {role:"user",content:userContent}], key, settings.groq.modelId);
-    const responseText = result.ok ? result.text : `⚠️ ${result.reason}`;
+    let responseText: string;
+    const intentResult = await brainHandle(userContent);
+    if (intentResult !== null) {
+      responseText = intentResult;
+    } else if (!key) {
+      responseText = "⚠️ Add a Groq API key in Settings → API & AI to get real replies.";
+    } else {
+      try {
+        responseText = await brainChat(userContent, {
+          history: historyForModel,
+          apiKey: key,
+          modelId: settings.groq.modelId,
+          extraContext: settings.identity.customInstructions,
+        });
+      } catch (e) {
+        responseText = `⚠️ ${e instanceof Error ? e.message : "Something went wrong."}`;
+      }
+    }
     const response: Message = { id:`m-${Date.now()}-response`, role:"yuvi", text: responseText, timestamp: new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) };
     setConversations(items=>items.map(c=>c.id===selected.id?{...c,preview:responseText.slice(0,80),messages:[...c.messages,response]}:c));
     setThinking(false);
